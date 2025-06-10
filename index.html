@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Pardinha Layla</title>
+    <style>
+        :root {
+            --rosa: #ff6b8b;
+            --rosa-claro: #ffb8c6;
+            --roxo: #cc66ff;
+            --branco: #fff9fb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--rosa) 0%, var(--roxo) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #3a1a2a;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            background-color: rgba(255, 249, 251, 0.9);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            margin: 20px 0;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--rosa);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .photo-frame {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 15px auto;
+            overflow: hidden;
+            border: 4px solid var(--rosa);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .photo-frame:hover img {
+            transform: scale(1.05);
+        }
+        
+        .message {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+            user-select: none;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, var(--rosa), var(--roxo));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 250px;
+        }
+        
+        .btn:hover, .btn:active {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hidden {
+            display: none;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .memory-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+        }
+        
+        .memory {
+            font-style: italic;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 3px solid var(--rosa);
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+            margin: 15px 0;
+        }
+        
+        .gallery img {
+            height: 120px;
+            width: auto;
+            border-radius: 10px;
+            scroll-snap-align: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .gallery img:active {
+            transform: scale(1.8);
+            z-index: 10;
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            font-weight: bold;
+            color: var(--roxo);
+        }
+        
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--rosa);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .touch-area {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(45deg, rgba(255,107,139,0.2), rgba(204,102,255,0.2));
+            border-radius: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--roxo);
+            user-select: none;
+        }
+        
+        .lyrics {
+            margin-top: 15px;
+            font-style: italic;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Layla, Minha Pardinha</h1>
+        
+        <!-- Adicione sua foto aqui -->
+        <div class="photo-frame">
+            <img src="nois.png" alt="Nossa foto">
+        </div>
+        
+        <p class="message">Você ilumina meus dias com seu sorriso e aquece meu coração com seu amor.</p>
+        
+        <div class="countdown" id="countdown"></div>
+        
+        <button class="btn" id="loveBtn">Eu te amo!</button>
+        <button class="btn" id="memoriesBtn">Nossas memórias</button>
+        <button class="btn" id="galleryBtn">Nossas fotos</button>
+        <button class="btn" id="musicLyricsBtn">Nossa música</button>
+        
+        <div class="touch-area" id="touchArea">
+            Toque aqui com amor
+        </div>
+        
+        <div id="loveMessage" class="hidden">
+            <h2>Eu te amo, minha pardinha!</h2>
+            <p>Você é a pessoa mais especial da minha vida. Cada momento ao seu lado é um presente.</p>
+            <p>Obrigado por ser exatamente quem você é.</p>
+        </div>
+        
+        <div id="memoriesContainer" class="memory-container hidden">
+            <h3>Nossas memórias</h3>
+            <div class="memory">Lembro do dia que nos conhecemos como se fosse hoje...</div>
+            <div class="memory">Nosso primeiro beijo foi mágico e inesquecível...</div>
+            <!-- Adicione mais memórias aqui -->
+        </div>
+        
+        <div id="galleryContainer" class="hidden">
+            <h3>Nossos momentos</h3>
+            <div class="gallery">
+                <!-- Adicione mais fotos aqui -->
+                <img src="beijo.jpg" alt="Nosso beijoo">
+                <img src="etec.jpg" alt="Nois juntinhuus">
+            </div>
+        </div>
+        
+        <div id="musicLyricsContainer" class="hidden">
+            <h3>I Wanna Be Yours</h3>
+            <div class="lyrics">
+                <p>I wanna be your vacuum cleaner<br>
+                Breathing in your dust<br>
+                I wanna be your Ford Cortina<br>
+                I will never rust</p>
+                
+                <p>If you like your coffee hot<br>
+                Let me be your coffee pot<br>
+                You call the shots, babe<br>
+                I just wanna be yours</p>
+                
+                <p>Secrets I have held in my heart<br>
+                Are harder to hide than I thought<br>
+                Maybe I just wanna be yours</p>
+                
+                <p>I wanna be yours<br>
+                I wanna be yours<br>
+                Wanna be yours<br>
+                Wanna be yours<br>
+                Wanna be yours</p>
+            </div>
+        </div>
+    </div>
+    
+    <button class="music-btn" id="musicBtn">🎵</button>
+    
+    <audio id="bgMusic" loop>
+        <!-- Substitua pelo link da música ou arquivo local -->
+        <source src="I Wanna Be Yours(M4A_128K).m4a" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+    
+    <script>
+        // Elementos DOM
+        const loveBtn = document.getElementById('loveBtn');
+        const memoriesBtn = document.getElementById('memoriesBtn');
+        const galleryBtn = document.getElementById('galleryBtn');
+        const musicLyricsBtn = document.getElementById('musicLyricsBtn');
+        const touchArea = document.getElementById('touchArea');
+        const musicBtn = document.getElementById('musicBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        const countdownEl = document.getElementById('countdown');
+        
+        // Criar corações
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('heart');
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        // Contador de tempo juntos
+        function updateCountdown() {
+            // Substitua pela data do seu relacionamento
+            const startDate = new Date('2023-10-01');
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            countdownEl.innerHTML = `Estamos juntos há ${days} dias e ${hours} horas!`;
+        }
+        
+        // Efeito de digitação
+        function typeWriter(text, element, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function typing() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            
+            typing();
+        }
+        
+        // Event Listeners
+        loveBtn.addEventListener('click', function() {
+            document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+            document.getElementById('loveMessage').classList.remove('hidden');
+            
+            // Criar muitos corações
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createHeart, i * 200);
+            }
+        });
+        
+        memoriesBtn.addEventListener('click', function() {
+            document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+            document.getElementById('memoriesContainer').classList.remove('hidden');
+        });
+        
+        galleryBtn.addEventListener('click', function() {
+            document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+            document.getElementById('galleryContainer').classList.remove('hidden');
+        });
+        
+        musicLyricsBtn.addEventListener('click', function() {
+            document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+            document.getElementById('musicLyricsContainer').classList.remove('hidden');
+            
+            // Tocar música automaticamente ao abrir a seção
+            bgMusic.play();
+            musicBtn.innerHTML = '🔊';
+        });
+        
+        touchArea.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            createHeart();
+            
+            // Criar coração no local do toque
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            
+            const touchHeart = document.createElement('div');
+            touchHeart.innerHTML = '❤️';
+            touchHeart.style.position = 'fixed';
+            touchHeart.style.left = touchX + 'px';
+            touchHeart.style.top = touchY + 'px';
+            touchHeart.style.fontSize = '30px';
+            touchHeart.style.transform = 'translate(-50%, -50%)';
+            touchHeart.style.animation = 'pulse 0.5s ease-out';
+            
+            document.body.appendChild(touchHeart);
+            
+            setTimeout(() => {
+                touchHeart.remove();
+            }, 1000);
+        });
+        
+        musicBtn.addEventListener('click', function() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.innerHTML = '🔊';
+            } else {
+                bgMusic.pause();
+                musicBtn.innerHTML = '🎵';
+            }
+        });
+        
+        // Inicialização
+        updateCountdown();
+        setInterval(updateCountdown, 3600000); // Atualizar a cada hora
+        setInterval(createHeart, 1000);
+        
+        // Efeito de toque para desktop também
+        touchArea.addEventListener('click', function() {
+            createHeart();
+        });
+    </script>
+</body>
+</html>
